@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface ChatUserDao {
 
   @Select("select * from chat_user where id = #{id}")
-  ChatUser selectOneById(Integer id);
+  ChatUser selectId(Integer id);
 
   @Select("select * from chat_user where login_account = #{loginAccount}")
-  ChatUser selectOneByLoginAccount(String loginAccount);
+  ChatUser selectAccount(String loginAccount);
 }

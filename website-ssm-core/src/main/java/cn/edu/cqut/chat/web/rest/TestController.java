@@ -1,4 +1,4 @@
-package cn.edu.cqut.chat.web.restful;
+package cn.edu.cqut.chat.web.rest;
 
 import org.springframework.web.bind.annotation.RestController;
 
