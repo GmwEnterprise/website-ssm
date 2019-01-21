@@ -5,9 +5,4 @@ package cn.edu.cqut.chat.service;
  */
 public interface UserMessageService {
 
-  String validUsername(String username);
-
-  String validEmail(String email);
-
-  String validPhone(String phone);
 }

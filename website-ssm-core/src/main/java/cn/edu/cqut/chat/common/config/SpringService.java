@@ -1,4 +1,4 @@
-package cn.edu.cqut.chat.config;
+package cn.edu.cqut.chat.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

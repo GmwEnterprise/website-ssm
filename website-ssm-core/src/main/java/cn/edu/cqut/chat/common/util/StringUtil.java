@@ -1,4 +1,4 @@
-package cn.edu.cqut.chat.util;
+package cn.edu.cqut.chat.common.util;
 
 /**
  * 字符串工具类
@@ -15,6 +15,7 @@ public final class StringUtil {
 
   /**
    * 判断字符串是否为空字符串
+   *
    * @param string 被判断的字符串
    * @return 不为空则返回true
    */

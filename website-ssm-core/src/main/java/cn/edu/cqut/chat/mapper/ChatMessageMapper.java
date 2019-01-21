@@ -1,7 +1,8 @@
-package cn.edu.cqut.chat.dao;
+package cn.edu.cqut.chat.mapper;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ChatMessageDao {
+public interface ChatMessageMapper {
+
 }

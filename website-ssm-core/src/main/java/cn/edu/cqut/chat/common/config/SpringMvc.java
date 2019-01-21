@@ -1,4 +1,4 @@
-package cn.edu.cqut.chat.config;
+package cn.edu.cqut.chat.common.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SpringMvc implements WebMvcConfigurer {
 
   @Bean
-  public ViewResolver viewResolver() {
+  public ViewResolver jspViewResolver() {
     InternalResourceViewResolver resolver = new InternalResourceViewResolver();
     resolver.setPrefix("/WEB-INF/views/");
     resolver.setSuffix(".jsp");
@@ -43,9 +43,9 @@ public class SpringMvc implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
-            .allowedOrigins("*")
-            .allowCredentials(true)
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-            .maxAge(3600);
+        .allowedOrigins("*")
+        .allowCredentials(true)
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+        .maxAge(3600);
   }
 }
