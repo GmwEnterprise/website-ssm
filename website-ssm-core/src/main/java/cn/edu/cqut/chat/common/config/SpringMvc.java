@@ -18,7 +18,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan("cn.edu.cqut.chat.web")
-public class SpringMvcConfig implements WebMvcConfigurer {
+public class SpringMvc implements WebMvcConfigurer {
 
   @Bean
   public ViewResolver viewResolver() {

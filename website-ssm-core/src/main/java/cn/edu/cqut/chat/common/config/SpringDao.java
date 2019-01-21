@@ -14,9 +14,9 @@ import javax.sql.DataSource;
 @Configuration
 @PropertySource(value = "classpath:dbinfo.properties", encoding = "UTF-8")
 @MapperScan(
-  basePackages = "cn.edu.cqut.chat.dao",
+  basePackages = "cn.edu.cqut.chat.mapper",
   annotationClass = Repository.class)
-public class OrmConfig {
+public class SpringDao {
 
   @Value("${datasource.driver}")
   String driver;
@@ -43,6 +43,7 @@ public class OrmConfig {
   @Bean
   public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) {
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+    factoryBean.setConfiguration(new MybatisConfig().getDefaultConfiguration());
     factoryBean.setTypeAliasesPackage("cn.edu.cqut.chat.entity");
     factoryBean.setDataSource(dataSource);
     return factoryBean;
