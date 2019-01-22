@@ -1,5 +1,8 @@
 package cn.edu.cqut.chat.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum RelationType {
 
   ATTENTION(1, "关注"), BLACKLIST(2, "拉黑"), NO_RELATION(3, "没有关系");

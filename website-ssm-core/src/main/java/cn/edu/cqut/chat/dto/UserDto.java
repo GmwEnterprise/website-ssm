@@ -12,7 +12,6 @@ public class UserDto {
   private String email;
   private String nickName;
   private Gender gender;
-  private RoleType roleType;
 
   public UserDto() {
 
@@ -25,7 +24,6 @@ public class UserDto {
     this.email = user.getEmail();
     this.nickName = user.getNickName();
     this.gender = user.getGender();
-    this.roleType = user.getRoleType();
   }
 
   public UserDto(
@@ -37,7 +35,6 @@ public class UserDto {
     this.email = email;
     this.nickName = nickName;
     this.gender = gender;
-    this.roleType = roleType;
   }
 
   public Long getId() {
@@ -88,14 +85,6 @@ public class UserDto {
     this.gender = gender;
   }
 
-  public RoleType getRoleType() {
-    return roleType;
-  }
-
-  public void setRoleType(RoleType roleType) {
-    this.roleType = roleType;
-  }
-
   @Override
   public String toString() {
     return "UserDto{" +
@@ -105,7 +94,6 @@ public class UserDto {
         ", email='" + email + '\'' +
         ", nickName='" + nickName + '\'' +
         ", gender=" + gender +
-        ", roleType=" + roleType +
         '}';
   }
 }

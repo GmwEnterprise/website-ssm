@@ -1,5 +1,8 @@
 package cn.edu.cqut.chat.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Gender {
 
   MALE(1, "男"), FEMALE(2, "女"), SECRET(3, "保密");

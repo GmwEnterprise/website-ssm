@@ -1,8 +1,11 @@
 package cn.edu.cqut.chat.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 账户角色类型
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum RoleType {
 
   /**
