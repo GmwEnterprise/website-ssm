@@ -2,11 +2,12 @@ package cn.edu.cqut.chat.common.config;
 
 import org.apache.ibatis.session.Configuration;
 
-public class MybatisConfig {
+class MybatisConfig {
 
-  public Configuration getDefaultConfiguration() {
+  Configuration getDefaultConfiguration() {
     Configuration conf = new Configuration();
     conf.setUseGeneratedKeys(true);
+    conf.setMapUnderscoreToCamelCase(true);
     return conf;
   }
 }

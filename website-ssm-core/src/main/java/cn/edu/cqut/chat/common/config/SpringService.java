@@ -1,7 +1,6 @@
 package cn.edu.cqut.chat.common.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -11,7 +10,6 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("cn.edu.cqut.chat.service")
 public class SpringService {
 
   @Bean

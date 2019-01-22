@@ -1,6 +1,7 @@
 package cn.edu.cqut.chat.entity;
 
 import cn.edu.cqut.chat.common.base.BaseEntity;
+import cn.edu.cqut.chat.common.enums.Gender;
 import cn.edu.cqut.chat.common.enums.RoleType;
 
 public class User extends BaseEntity {
@@ -9,11 +10,9 @@ public class User extends BaseEntity {
   private String password; // 密码
   private String phone; // 绑定的手机号
   private String email; // 绑定的邮箱
-  private String gender; // 性别
+  private Gender gender; // 性别
   private String idNumber; // 身份证号
-  private String realName; // 真实姓名
   private String nickName; // 网名，昵称
-
   private RoleType roleType; // 用户角色类型
 
   public String getAccount() {
@@ -48,11 +47,11 @@ public class User extends BaseEntity {
     this.email = email;
   }
 
-  public String getGender() {
+  public Gender getGender() {
     return gender;
   }
 
-  public void setGender(String gender) {
+  public void setGender(Gender gender) {
     this.gender = gender;
   }
 
@@ -62,14 +61,6 @@ public class User extends BaseEntity {
 
   public void setIdNumber(String idNumber) {
     this.idNumber = idNumber;
-  }
-
-  public String getRealName() {
-    return realName;
-  }
-
-  public void setRealName(String realName) {
-    this.realName = realName;
   }
 
   public String getNickName() {

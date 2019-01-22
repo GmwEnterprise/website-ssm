@@ -8,14 +8,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 @PropertySource(value = "classpath:dbinfo.properties", encoding = "UTF-8")
 @MapperScan(
-  basePackages = "cn.edu.cqut.chat.mapper",
-  annotationClass = Mapper.class)
+    basePackages = "cn.edu.cqut.chat.mapper",
+    annotationClass = Mapper.class)
 public class SpringDao {
 
   @Value("${datasource.driver}")
@@ -41,11 +43,13 @@ public class SpringDao {
   }
 
   @Bean
-  public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) {
-    SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-    factoryBean.setConfiguration(new MybatisConfig().getDefaultConfiguration());
-    factoryBean.setTypeAliasesPackage("cn.edu.cqut.chat.entity");
-    factoryBean.setDataSource(dataSource);
-    return factoryBean;
+  public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) throws IOException {
+    SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
+    factory.setConfiguration(new MybatisConfig().getDefaultConfiguration());
+    // factory.setTypeAliasesSuperType(BaseEntity.class);
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    factory.setMapperLocations(resolver.getResources("classpath:mapper/*.xml"));
+    factory.setDataSource(dataSource);
+    return factory;
   }
 }

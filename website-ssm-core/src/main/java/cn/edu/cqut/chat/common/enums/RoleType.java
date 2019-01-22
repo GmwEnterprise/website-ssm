@@ -20,33 +20,39 @@ public enum RoleType {
    */
   ADMIN(2, "后台管理员");
 
-  private int typeId;
-  private String typeName;
+  private int index;
+  private String name;
 
-  RoleType(int typeId, String typeName) {
-    this.typeId = typeId;
-    this.typeName = typeName;
+  RoleType(int index, String name) {
+    this.index = index;
+    this.name = name;
   }
 
-  public int getTypeId() {
-    return typeId;
+  public int getIndex() {
+    return index;
   }
 
-  public void setTypeId(int typeId) {
-    this.typeId = typeId;
+  public void setIndex(int index) {
+    this.index = index;
   }
 
-  public String getTypeName() {
-    return typeName;
+  public String getName() {
+    return name;
   }
 
-  public void setTypeName(String typeName) {
-    this.typeName = typeName;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public static RoleType typeOf(int typeId) {
+  /**
+   * 通过编号获取角色类型
+   *
+   * @param index 角色类型编号
+   * @return 角色类型
+   */
+  public static RoleType typeOf(int index) {
     for (RoleType type : values()) {
-      if (type.typeId == typeId) {
+      if (type.index == index) {
         return type;
       }
     }
