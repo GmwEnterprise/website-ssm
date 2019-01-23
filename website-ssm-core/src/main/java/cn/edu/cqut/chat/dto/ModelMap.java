@@ -3,7 +3,7 @@ package cn.edu.cqut.chat.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModelMap extends Dto {
+public class ModelMap extends DtoFactory {
 
   Map<String, Object> map;
 
@@ -12,7 +12,7 @@ public class ModelMap extends Dto {
   }
 
   @Override
-  public Dto setData(String key, Object val) {
+  public DtoFactory setData(String key, Object val) {
     map.put(key, val);
     return this;
   }

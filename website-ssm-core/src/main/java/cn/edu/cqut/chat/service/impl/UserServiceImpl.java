@@ -2,7 +2,7 @@ package cn.edu.cqut.chat.service.impl;
 
 import cn.edu.cqut.chat.common.base.BaseServiceImpl;
 import cn.edu.cqut.chat.common.exception.CrudException;
-import cn.edu.cqut.chat.dto.UserDto;
+import cn.edu.cqut.chat.dto.BaseDto;
 import cn.edu.cqut.chat.entity.User;
 import cn.edu.cqut.chat.mapper.UserMapper;
 import cn.edu.cqut.chat.service.UserService;
@@ -22,7 +22,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
 
   @Override
   @Transactional
-  public UserDto saveUser(User user) {
+  public BaseDto<User> saveUser(User user) {
     int effect = 0;
     Date now = new Date();
     user.setLastModifiedTime(now);
@@ -33,7 +33,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserMapper> implement
       effect = mapper.insert(user);
     }
     if (effect > 0) {
-      return new UserDto(user);
+      return new BaseDto<>(user);
     }
     throw new CrudException("保存用户数据失败！");
   }

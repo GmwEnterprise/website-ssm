@@ -74,30 +74,28 @@
 
   <select id="queryAll" resultMap="userMap">
     select * from t_user a
-    <if test="entity != null">
-      <where>
-        <if test="entity.account != null and entity.account != ''">
-          and a.account = #{entity.account}
-        </if>
-        <if test="entity.phone != null and entity.phone != ''">
-          and a.phone like concat('%', #{entity.phone}, '%')
-        </if>
-        <if test="entity.email != null and entity.email != ''">
-          and a.email like concat('%', #{entity.email}, '%')
-        </if>
-        <if test="entity.idNumber != null and entity.idNumber != ''">
-          and a.id_number like concat('%', #{entity.idNumber}, '%')
-        </if>
-        <if test="entity.nickName != null and entity.nickName != ''">
-          and a.nick_name like concat('%', #{entity.nickName}, '%')
-        </if>
-        <if test="entity.gender != null">
-          and a.gender = #{entity.gender.index}
-        </if>
-        <if test="entity.roleType != null">
-          and a.role_type = #{entity.roleType.index}
-        </if>
-      </where>
-    </if>
+    <where>
+      <if test="account != null and account != ''">
+        and a.account = #{account}
+      </if>
+      <if test="phone != null and phone != ''">
+        and a.phone like concat('%', #{phone}, '%')
+      </if>
+      <if test="email != null and email != ''">
+        and a.email like concat('%', #{email}, '%')
+      </if>
+      <if test="idNumber != null and idNumber != ''">
+        and a.id_number like concat('%', #{idNumber}, '%')
+      </if>
+      <if test="nickName != null and nickName != ''">
+        and a.nick_name like concat('%', #{nickName}, '%')
+      </if>
+      <if test="gender != null">
+        and a.gender = #{gender.index}
+      </if>
+      <if test="roleType != null">
+        and a.role_type = #{roleType.index}
+      </if>
+    </where>
   </select>
 </mapper>

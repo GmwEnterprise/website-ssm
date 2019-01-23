@@ -2,13 +2,13 @@ package cn.edu.cqut.chat.dto;
 
 import java.util.Map;
 
-public abstract class Dto {
+public abstract class DtoFactory {
 
-  public abstract Dto setData(String key, Object val);
+  public abstract DtoFactory setData(String key, Object val);
 
   public abstract Map<String, Object> build();
 
-  public static Dto success(String msg) {
+  public static DtoFactory success(String msg) {
     ModelMap model = new ModelMap();
     model.setData("success", true);
     model.setData("message", msg);

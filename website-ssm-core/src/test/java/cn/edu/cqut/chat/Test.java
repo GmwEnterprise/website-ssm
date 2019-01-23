@@ -1,9 +1,7 @@
 package cn.edu.cqut.chat;
 
 import cn.edu.cqut.chat.common.config.SpringRoot;
-import cn.edu.cqut.chat.common.enums.Gender;
-import cn.edu.cqut.chat.common.enums.RoleType;
-import cn.edu.cqut.chat.dto.UserDto;
+import cn.edu.cqut.chat.dto.BaseDto;
 import cn.edu.cqut.chat.entity.User;
 import cn.edu.cqut.chat.mapper.UserMapper;
 import cn.edu.cqut.chat.service.UserService;
@@ -37,7 +35,7 @@ public class Test {
     User user = userService.get(4L);
     user.setPassword("ganmingwei");
     try {
-      UserDto userDto = userService.saveUser(user);
+      BaseDto<User> userDto = userService.saveUser(user);
       System.out.println(userDto);
     } catch (RuntimeException e) {
       System.err.println("进入了catch");

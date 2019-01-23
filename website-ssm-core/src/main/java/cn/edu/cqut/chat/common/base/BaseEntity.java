@@ -1,5 +1,7 @@
 package cn.edu.cqut.chat.common.base;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -35,6 +37,7 @@ public class BaseEntity {
     this.id = id;
   }
 
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   public Date getCreateTime() {
     return createTime;
   }
@@ -43,6 +46,7 @@ public class BaseEntity {
     this.createTime = createTime;
   }
 
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   public Date getLastModifiedTime() {
     return lastModifiedTime;
   }
