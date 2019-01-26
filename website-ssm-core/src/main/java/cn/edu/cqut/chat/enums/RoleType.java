@@ -1,27 +1,18 @@
-package cn.edu.cqut.chat.common.enums;
+package cn.edu.cqut.chat.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum Gender {
+public enum RoleType {
 
-  MALE(1, "男"), FEMALE(2, "女"), SECRET(3, "保密");
+  ROOT(0, "超级管理员"), USER(1, "普通用户"), ADMIN(2, "后台管理员");
 
   private int index;
   private String name;
 
-  Gender(int index, String name) {
-    this.name = name;
+  RoleType(int index, String name) {
     this.index = index;
-  }
-
-  public static Gender typeOf(int index) {
-    for (Gender item : values()) {
-      if (item.index == index) {
-        return item;
-      }
-    }
-    return null;
+    this.name = name;
   }
 
   public int getIndex() {
@@ -38,5 +29,14 @@ public enum Gender {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public static RoleType typeOf(int index) {
+    for (RoleType type : values()) {
+      if (type.index == index) {
+        return type;
+      }
+    }
+    return null;
   }
 }

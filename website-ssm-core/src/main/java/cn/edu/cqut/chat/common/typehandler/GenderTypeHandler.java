@@ -1,6 +1,6 @@
 package cn.edu.cqut.chat.common.typehandler;
 
-import cn.edu.cqut.chat.common.enums.Gender;
+import cn.edu.cqut.chat.enums.Gender;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;

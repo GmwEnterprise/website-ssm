@@ -1,6 +1,6 @@
 package cn.edu.cqut.chat.common.typehandler;
 
-import cn.edu.cqut.chat.common.enums.RoleType;
+import cn.edu.cqut.chat.enums.RoleType;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;

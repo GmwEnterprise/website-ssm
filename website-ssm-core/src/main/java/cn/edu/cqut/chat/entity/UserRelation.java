@@ -1,9 +1,9 @@
 package cn.edu.cqut.chat.entity;
 
 import cn.edu.cqut.chat.common.base.BaseEntity;
-import cn.edu.cqut.chat.common.enums.RelationType;
+import cn.edu.cqut.chat.enums.RelationType;
 
-public class Relation extends BaseEntity {
+public class UserRelation extends BaseEntity {
 
   private User userA; // 用户本人
   private User userB; // 与用户有关系的人

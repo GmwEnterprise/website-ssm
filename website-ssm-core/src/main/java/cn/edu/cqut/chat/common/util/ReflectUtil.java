@@ -5,7 +5,7 @@ import cn.edu.cqut.chat.common.ClassDetails;
 /**
  * 反射工具类
  */
-public class ReflectUtil {
+public final class ReflectUtil {
 
   /**
    * 返回实体的类名，首字母小写
@@ -17,7 +17,7 @@ public class ReflectUtil {
     return simpleName.substring(0, 1).toLowerCase() + simpleName.substring(1);
   }
 
-  public static ClassDetails getClassDetail(Class<?> clazz) {
+  public static ClassDetails getClassDetailText(Class<?> clazz) {
 
     return null;
   }

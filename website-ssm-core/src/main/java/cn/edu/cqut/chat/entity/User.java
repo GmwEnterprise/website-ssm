@@ -1,8 +1,8 @@
 package cn.edu.cqut.chat.entity;
 
 import cn.edu.cqut.chat.common.base.BaseEntity;
-import cn.edu.cqut.chat.common.enums.Gender;
-import cn.edu.cqut.chat.common.enums.RoleType;
+import cn.edu.cqut.chat.enums.Gender;
+import cn.edu.cqut.chat.enums.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User extends BaseEntity {

@@ -18,7 +18,7 @@
     Logger则指定日志信息流向哪个管道
     -->
 
-    <Root level="INFO">
+    <Root level="DEBUG">
       <AppenderRef ref="console_sys_out"/>
     </Root>
 

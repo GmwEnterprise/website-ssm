@@ -6,5 +6,4 @@ import cn.edu.cqut.chat.entity.User;
 
 public interface UserService extends BaseService<User> {
 
-  BaseDto<User> saveUser(User user);
 }

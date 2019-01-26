@@ -1,7 +1,7 @@
 package cn.edu.cqut.chat.web;
 
-import cn.edu.cqut.chat.common.enums.Gender;
-import cn.edu.cqut.chat.common.enums.RoleType;
+import cn.edu.cqut.chat.enums.Gender;
+import cn.edu.cqut.chat.enums.RoleType;
 import cn.edu.cqut.chat.dto.BaseDto;
 import cn.edu.cqut.chat.dto.DtoFactory;
 import cn.edu.cqut.chat.entity.User;
@@ -26,7 +26,7 @@ public class UserController {
 
   /**
    * 通过id获取用户信息
-   * @param id id
+   * @param id 用户id
    * @return 用户信息
    */
   @GetMapping("/detail/{id}")
@@ -40,12 +40,17 @@ public class UserController {
     return DtoFactory.error("获取用户信息失败");
   }
 
+  /**
+   * 获取用户信息列表
+   * @param condition 查询条件
+   * @return 满足查询条件的用户列表
+   */
   @GetMapping("/list")
   private Map<String, Object> getUserList(BaseDto<User> condition) {
+    List<User> list = userService.getList(null);
     return DtoFactory.success("用户信息")
-        .setData("userList", userService.getList(null))
+        .setData("userList", list)
         .build();
-    // return DtoFactory.error("获取用户信息列表失败");
   }
 
   /**
@@ -80,7 +85,7 @@ public class UserController {
       user.setGender(Gender.SECRET);
     }
     try {
-      BaseDto<User> userDto = userService.saveUser(user);
+      BaseDto<User> userDto = userService.save(user);
       // 若没有异常，将userDto存入session
       req.getSession().setAttribute("currentUser", userDto);
       return DtoFactory.success("注册成功")
