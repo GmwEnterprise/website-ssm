@@ -42,8 +42,10 @@ public class UserController {
 
   @GetMapping("/list")
   private Map<String, Object> getUserList(BaseDto<User> condition) {
-
-    return DtoFactory.error("获取用户信息列表失败");
+    return DtoFactory.success("用户信息")
+        .setData("userList", userService.getList(null))
+        .build();
+    // return DtoFactory.error("获取用户信息列表失败");
   }
 
   /**

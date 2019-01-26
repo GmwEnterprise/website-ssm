@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="INFO" monitorInterval="30">
+
+  <Appenders>
+    <!--
+    Appender就是一个管道，定义了日志内容的去向(保存位置)
+    -->
+
+    <!--ConsoleAppender.class-->
+    <Console name="console_sys_out" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-25t] [%-5level] %logger{36} - %msg%n"/>
+    </Console>
+
+  </Appenders>
+
+  <Loggers>
+    <!--
+    Logger则指定日志信息流向哪个管道
+    -->
+
+    <Root level="INFO">
+      <AppenderRef ref="console_sys_out"/>
+    </Root>
+
+  </Loggers>
+
+</Configuration>
