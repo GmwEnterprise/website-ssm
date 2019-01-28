@@ -2,7 +2,6 @@ package cn.edu.cqut.chat.common.base;
 
 import cn.edu.cqut.chat.common.exception.CrudException;
 import cn.edu.cqut.chat.dto.BaseDto;
-import cn.edu.cqut.chat.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
