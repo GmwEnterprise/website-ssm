@@ -3,9 +3,7 @@ package cn.edu.cqut.chat.service.impl;
 import cn.edu.cqut.chat.common.base.BaseServiceImpl;
 import cn.edu.cqut.chat.common.exception.CrudException;
 import cn.edu.cqut.chat.dto.BaseDto;
-import cn.edu.cqut.chat.entity.User;
 import cn.edu.cqut.chat.entity.UserRelation;
-import cn.edu.cqut.chat.enums.RelationType;
 import cn.edu.cqut.chat.mapper.UserRelationMapper;
 import cn.edu.cqut.chat.service.UserRelationService;
 import org.springframework.stereotype.Service;
@@ -38,14 +36,5 @@ public class UserRelationServiceImpl
     } else {
       throw new CrudException("实体为空，保存数据失败！");
     }
-  }
-
-  @Override
-  public BaseDto<UserRelation> makeRelation(User a, User b, RelationType relationType) {
-    UserRelation relation = new UserRelation();
-    relation.setUserA(a);
-    relation.setUserB(b);
-    relation.setRelationType(relationType);
-    return save(relation);
   }
 }

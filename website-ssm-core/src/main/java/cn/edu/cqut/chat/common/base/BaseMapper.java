@@ -12,5 +12,10 @@ public interface BaseMapper<Entity extends BaseEntity> {
 
   int update(Entity entity);
 
+  /**
+   * 若指定的id不存在于查询的表，则不报错，返回 0
+   * @param id 指定的表的主键
+   * @return 受影响行数
+   */
   int delete(Long id);
 }

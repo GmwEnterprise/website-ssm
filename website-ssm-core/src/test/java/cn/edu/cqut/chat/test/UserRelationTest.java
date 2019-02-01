@@ -20,6 +20,11 @@ public class UserRelationTest extends BaseTest {
   }
 
   @Test
+  public void testMapperUpdate() {
+    userRelationMapper.delete(2L);
+  }
+
+  @Test
   public void testMapperInsert() {
     List<User> users = userService.getList(null)
         .stream()

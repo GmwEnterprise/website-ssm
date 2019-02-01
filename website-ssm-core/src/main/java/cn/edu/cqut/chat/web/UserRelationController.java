@@ -3,7 +3,6 @@ package cn.edu.cqut.chat.web;
 import cn.edu.cqut.chat.dto.DtoFactory;
 import cn.edu.cqut.chat.entity.User;
 import cn.edu.cqut.chat.entity.UserRelation;
-import cn.edu.cqut.chat.enums.RelationType;
 import cn.edu.cqut.chat.service.UserRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,14 +38,5 @@ public class UserRelationController {
     return DtoFactory.success("查询用户关系成功")
         .setData("relations", relations)
         .build();
-  }
-
-  @GetMapping("/attention")
-  private Map<String, Object> attention(Long user, Long concern) {
-    User a = new User(), b = new User();
-    a.setId(user);
-    b.setId(concern);
-    userRelationService.makeRelation(a, b, RelationType.ATTENTION);
-    return null;
   }
 }
