@@ -8,7 +8,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Import({
     SpringDao.class,
-    SpringService.class })
+    SpringService.class,
+    DataSourceConfig.class })
 @Configuration
 @ComponentScan(
     basePackages = "cn.edu.cqut.chat",

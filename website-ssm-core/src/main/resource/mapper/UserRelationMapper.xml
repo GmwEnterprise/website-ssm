@@ -1,70 +1,118 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.cqut.chat.mapper.UserRelationMapper">
 
-  <resultMap id="relationMap" type="cn.edu.cqut.chat.entity.UserRelation">
-    <id property="id" column="id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="lastModifiedTime" column="last_modified_time"/>
-    <result property="remark" column="remark"/>
-    <result property="relationType" column="relation_type"
+  <resultMap id="relationMap" type="UserRelation">
+    <id column="id" property="id"/>
+    <result column="create_time" property="createTime"/>
+    <result column="last_modified_time" property="lastModifiedTime"/>
+    <result column="remark" property="remark"/>
+    <result column="relation_type" property="relationType"
             typeHandler="cn.edu.cqut.chat.common.typehandler.RelationTypeHandler"/>
-    <association property="userA" column="user_a"
-                 select="cn.edu.cqut.chat.mapper.UserMapper.queryById"/>
-    <association property="userB" column="user_b"
-                 select="cn.edu.cqut.chat.mapper.UserMapper.queryById"/>
+    <association property="you" javaType="User" resultMap="you"/>
+    <association property="other" javaType="User" resultMap="other"/>
   </resultMap>
 
-  <select id="queryById" resultMap="relationMap">
-    select *
-    from t_user_relation
-    where id = #{id}
+  <resultMap id="you" type="User">
+    <id column="you_id" property="id"/>
+    <result column="you_nick_name" property="nickName"/>
+    <result column="you_gender" property="gender"
+            typeHandler="cn.edu.cqut.chat.common.typehandler.GenderTypeHandler"/>
+    <association property="account" javaType="Account">
+      <id column="you_acc_id" property="id"/>
+      <result column="you_acc_uid" property="uid"/>
+    </association>
+  </resultMap>
+
+  <resultMap id="other" type="User">
+    <id column="other_id" property="id"/>
+    <result column="other_nick_name" property="nickName"/>
+    <result column="other_gender" property="gender"
+            typeHandler="cn.edu.cqut.chat.common.typehandler.GenderTypeHandler"/>
+    <association property="account" javaType="Account">
+      <id column="other_acc_id" property="id"/>
+      <result column="other_acc_uid" property="uid"/>
+    </association>
+  </resultMap>
+
+  <select id="findYourRelation"
+          resultMap="cn.edu.cqut.chat.mapper.UserMapper.userMap">
+    SELECT a.*, b.id AS account_id, b.uid AS account_uid
+    FROM t_user a INNER JOIN t_account b ON a.account = b.uid
+    WHERE a.account IN
+          (SELECT other
+           FROM t_user_relation
+           WHERE you = #{user.account.uid}
+             AND relation_type = #{type.index})
   </select>
 
+  <sql id="relationMapSelect">
+    SELECT a.*,
+           user_you.id          AS you_id,
+           user_you.nick_name   AS you_nick_name,
+           user_you.gender      AS you_gender,
+           you_acc.id           AS you_acc_id,
+           you_acc.uid          AS you_acc_uid,
+           user_other.id        AS other_id,
+           user_other.nick_name AS other_nick_name,
+           user_other.gender    AS other_gender,
+           other_acc.id         AS other_acc_id,
+           other_acc.uid        AS other_acc_uid
+    FROM t_user_relation a INNER JOIN t_user user_you
+             ON a.you = user_you.account
+                           INNER JOIN t_account you_acc
+             ON user_you.account = you_acc.uid
+                           INNER JOIN t_user user_other
+             ON a.other = user_other.account
+                           INNER JOIN t_account other_acc
+             ON user_other.account = other_acc.uid
+  </sql>
+
   <select id="queryAll" resultMap="relationMap">
-    select * from t_user_relation a
+    <include refid="relationMapSelect"/>
     <where>
-      <if test="userA != null and userA.id != null">
-        and user_a = #{userA.id}
+      <if test="you != null and you.account != null and you.account.uid != null and you.account.uid != ''">
+        AND a.you = #{you.account.uid}
       </if>
-      <if test="userB != null and userB.id != null">
-        and user_b = #{userB.id}
+      <if test="other != null and other.account != null and other.account.uid != null and ther.account.uid != ''">
+        AND a.other = #{other.account.uid}
       </if>
       <if test="relationType != null">
-        and relation_type = #{relationType.index}
+        AND a.relation_type = #{relationType.index}
       </if>
     </where>
   </select>
 
   <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-    insert into t_user_relation (create_time,
+    INSERT INTO t_user_relation (create_time,
                                  last_modified_time,
                                  remark,
-                                 user_a,
-                                 user_b,
+                                 you,
+                                 other,
                                  relation_type)
-    values (#{createTime},
+    VALUES (#{createTime},
             #{lastModifiedTime},
             #{remark},
-            #{userA.id},
-            #{userB.id},
-            #{relationType, typeHandler = cn.edu.cqut.chat.common.typehandler.RelationTypeHandler})
+            #{you.account.uid},
+            #{other.account.uid},
+            #{relationType.index})
   </insert>
 
   <update id="update">
-    update t_user_relation
-    set create_time        = #{createTime},
+    UPDATE t_user_relation
+    SET create_time        = #{createTime},
         last_modified_time = #{lastModifiedTime},
         remark             = #{remark},
-        user_a             = #{userA.id},
-        user_b             = #{userB.id},
-        relation_type      = #{relationType, typeHandler = cn.edu.cqut.chat.common.typehandler.RelationTypeHandler}
-    where id = #{id}
+        you                = #{you.account.uid},
+        other              = #{other.account.uid},
+        relation_type      = #{relationType.index}
+    WHERE id = #{id}
   </update>
 
   <delete id="delete">
-    delete
-    from t_user
-    where id = #{id}
+    DELETE
+    FROM t_user_relation
+    WHERE id = #{id}
   </delete>
 </mapper>

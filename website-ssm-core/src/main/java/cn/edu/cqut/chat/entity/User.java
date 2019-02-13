@@ -2,51 +2,20 @@ package cn.edu.cqut.chat.entity;
 
 import cn.edu.cqut.chat.common.base.BaseEntity;
 import cn.edu.cqut.chat.enums.Gender;
-import cn.edu.cqut.chat.enums.RoleType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User extends BaseEntity {
 
-  private String account; // 账户ID
-  private String password; // 密码
-  private String phone; // 绑定的手机号
-  private String email; // 绑定的邮箱
-  private Gender gender; // 性别
-  private String idNumber; // 身份证号
-  private String nickName; // 网名，昵称
-  private RoleType roleType; // 用户角色类型
+  private Account account;
+  private Gender gender;
+  private String idNumber;
+  private String nickName;
 
-  public String getAccount() {
+  public Account getAccount() {
     return account;
   }
 
-  public void setAccount(String account) {
+  public void setAccount(Account account) {
     this.account = account;
-  }
-
-  @JsonIgnore
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
   }
 
   public Gender getGender() {
@@ -73,11 +42,13 @@ public class User extends BaseEntity {
     this.nickName = nickName;
   }
 
-  public RoleType getRoleType() {
-    return roleType;
-  }
-
-  public void setRoleType(RoleType roleType) {
-    this.roleType = roleType;
+  @Override
+  public String toString() {
+    return "User{" +
+        "account=" + account +
+        ", gender=" + gender +
+        ", idNumber='" + idNumber + '\'' +
+        ", nickName='" + nickName + '\'' +
+        '}';
   }
 }

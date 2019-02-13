@@ -1,7 +1,5 @@
 package cn.edu.cqut.chat.common.base;
 
-import cn.edu.cqut.chat.dto.BaseDto;
-
 import java.util.List;
 
 /**
@@ -17,9 +15,9 @@ public interface BaseService<Entity> {
 
   List<Entity> getList(Entity entity);
 
-  int remove(Entity entity);
+  void remove(Entity entity);
 
-  int remove(Long id);
+  void remove(Long id);
 
-  BaseDto<Entity> save(Entity entity);
+  void save(Entity entity);
 }

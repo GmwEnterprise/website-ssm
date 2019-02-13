@@ -5,24 +5,24 @@ import cn.edu.cqut.chat.enums.RelationType;
 
 public class UserRelation extends BaseEntity {
 
-  private User userA; // 用户本人
-  private User userB; // 与用户有关系的人
-  private RelationType relationType; // 关注-拉黑-没有关联
+  private User you;
+  private User other;
+  private RelationType relationType;
 
-  public User getUserA() {
-    return userA;
+  public User getYou() {
+    return you;
   }
 
-  public void setUserA(User userA) {
-    this.userA = userA;
+  public void setYou(User you) {
+    this.you = you;
   }
 
-  public User getUserB() {
-    return userB;
+  public User getOther() {
+    return other;
   }
 
-  public void setUserB(User userB) {
-    this.userB = userB;
+  public void setOther(User other) {
+    this.other = other;
   }
 
   public RelationType getRelationType() {
@@ -31,5 +31,14 @@ public class UserRelation extends BaseEntity {
 
   public void setRelationType(RelationType relationType) {
     this.relationType = relationType;
+  }
+
+  @Override
+  public String toString() {
+    return "UserRelation{" +
+        "you=" + you +
+        ", other=" + other +
+        ", relationType=" + relationType +
+        '}';
   }
 }

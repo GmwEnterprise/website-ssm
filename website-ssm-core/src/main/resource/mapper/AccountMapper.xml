@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqut.chat.mapper.AccountMapper">
+
+  <select id="queryById" resultType="Account">
+    SELECT *
+    FROM t_account
+    WHERE id = #{id}
+  </select>
+
+  <select id="queryAll" resultType="Account" parameterType="Account">
+    SELECT *
+    FROM t_account
+    <where>
+      <if test="uid != null and uid != ''">
+        AND uid = #{uid}
+      </if>
+      <if test="bindPhone != null and bindPhone != ''">
+        AND bind_phone = #{bindPhone}
+      </if>
+      <if test="bindEmail != null and bindEmail != ''">
+        AND bind_email = #{bindEmail}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    INSERT INTO t_account (create_time,
+                           last_modified_time,
+                           remark,
+                           uid,
+                           password,
+                           bind_phone,
+                           bind_email)
+    VALUES (#{createTime},
+            #{lastModifiedTime},
+            #{remark},
+            #{uid},
+            #{password},
+            #{bindPhone},
+            #{bindEmail})
+  </insert>
+
+  <update id="update">
+    UPDATE t_account
+    SET create_time        = #{createTime},
+        last_modified_time = #{lastModifiedTime},
+        remark             = #{remark},
+        uid                = #{uid},
+        password           = #{password},
+        bind_phone         = #{bindPhone},
+        bind_email         = #{bindEmail}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="delete">
+    DELETE
+    FROM t_account
+    WHERE id = #{id}
+  </delete>
+</mapper>

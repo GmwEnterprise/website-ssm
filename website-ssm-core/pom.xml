@@ -21,6 +21,8 @@
   </properties>
 
   <dependencies>
+
+    <!--log4j2依赖-->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>

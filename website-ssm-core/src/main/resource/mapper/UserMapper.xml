@@ -1,101 +1,85 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.cqut.chat.mapper.UserMapper">
 
-  <resultMap id="userMap" type="cn.edu.cqut.chat.entity.User">
-    <id property="id" column="id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="lastModifiedTime" column="last_modified_time"/>
-    <result property="remark" column="remark"/>
-    <result property="account" column="account"/>
-    <result property="password" column="password"/>
-    <result property="phone" column="phone"/>
-    <result property="email" column="email"/>
-    <result property="gender" column="gender"
+  <resultMap id="userMap" type="User">
+    <id column="id" property="id"/>
+    <result column="create_time" property="createTime"/>
+    <result column="last_modified_time" property="lastModifiedTime"/>
+    <result column="remark" property="remark"/>
+    <result column="gender" property="gender"
             typeHandler="cn.edu.cqut.chat.common.typehandler.GenderTypeHandler"/>
-    <result property="idNumber" column="id_number"/>
-    <result property="nickName" column="nick_name"/>
-    <result property="roleType" column="role_type"
-            typeHandler="cn.edu.cqut.chat.common.typehandler.RoleTypeHandler"/>
+    <result column="id_number" property="idNumber"/>
+    <result column="nick_name" property="nickName"/>
+    <association property="account" javaType="Account" resultMap="accountMap"/>
   </resultMap>
 
-  <delete id="delete">
-    delete
-    from t_user
-    where id = #{id}
-  </delete>
+  <resultMap id="accountMap" type="Account">
+    <id column="account_id" property="id"/>
+    <result column="account_uid" property="uid"/>
+  </resultMap>
 
-  <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-    insert into t_user (create_time,
-                        last_modified_time,
-                        remark,
-                        account,
-                        password,
-                        phone,
-                        email,
-                        gender,
-                        id_number,
-                        nick_name,
-                        role_type)
-    values (#{createTime},
-            #{lastModifiedTime},
-            #{remark},
-            #{account},
-            #{password},
-            #{phone},
-            #{email},
-            #{gender, typeHandler = cn.edu.cqut.chat.common.typehandler.GenderTypeHandler},
-            #{idNumber},
-            #{nickName},
-            #{roleType, typeHandler = cn.edu.cqut.chat.common.typehandler.RoleTypeHandler})
-  </insert>
-
-  <update id="update">
-    update t_user
-    set create_time        = #{createTime},
-        last_modified_time = #{lastModifiedTime},
-        remark             = #{remark},
-        account            = #{account},
-        password           = #{password},
-        phone              = #{phone},
-        email              = #{email},
-        gender             = #{gender, typeHandler = cn.edu.cqut.chat.common.typehandler.GenderTypeHandler},
-        id_number          = #{idNumber},
-        nick_name          = #{nickName},
-        role_type          = #{roleType, typeHandler = cn.edu.cqut.chat.common.typehandler.RoleTypeHandler}
-    where id = #{id}
-  </update>
+  <sql id="userMapSelect">
+    SELECT a.*, b.id AS account_id, b.uid AS account_uid
+    FROM t_user a INNER JOIN t_account b ON a.account = b.uid
+  </sql>
 
   <select id="queryById" resultMap="userMap">
-    select *
-    from t_user
-    where id = #{id}
+    <include refid="userMapSelect"/>
+    WHERE a.id = #{id}
   </select>
 
   <select id="queryAll" resultMap="userMap">
-    select * from t_user a
+    <include refid="userMapSelect"/>
     <where>
       <if test="account != null and account != ''">
-        and a.account = #{account}
-      </if>
-      <if test="phone != null and phone != ''">
-        and a.phone like concat('%', #{phone}, '%')
-      </if>
-      <if test="email != null and email != ''">
-        and a.email like concat('%', #{email}, '%')
-      </if>
-      <if test="idNumber != null and idNumber != ''">
-        and a.id_number like concat('%', #{idNumber}, '%')
+        AND a.account = #{account}
       </if>
       <if test="nickName != null and nickName != ''">
-        and a.nick_name like concat('%', #{nickName}, '%')
+        AND a.nick_name = #{nickName}
+      </if>
+      <if test="idNumber != null and idNumber != ''">
+        AND a.id_number = #{idNumber}
       </if>
       <if test="gender != null">
-        and a.gender = #{gender.index}
-      </if>
-      <if test="roleType != null">
-        and a.role_type = #{roleType.index}
+        AND a.gender = #{gender.index}
       </if>
     </where>
   </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    INSERT INTO t_user (create_time,
+                        last_modified_time,
+                        remark,
+                        account,
+                        gender,
+                        id_number,
+                        nick_name)
+    VALUES (#{createTime},
+            #{lastModifiedTime},
+            #{remark},
+            #{account.uid},
+            #{gender, typeHandler = cn.edu.cqut.chat.common.typehandler.GenderTypeHandler},
+            #{idNumber},
+            #{nickName})
+  </insert>
+
+  <update id="update">
+    UPDATE t_user
+    SET create_time        = #{createTime},
+        last_modified_time = #{lastModifiedTime},
+        remark             = #{remark},
+        account            = #{account.uid},
+        gender             = #{gender, typeHandler = cn.edu.cqut.chat.common.typehandler.GenderTypeHandler},
+        id_number          = #{idNumber},
+        nick_name          = #{nickName}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="delete">
+    DELETE
+    FROM t_user
+    WHERE id = #{id}
+  </delete>
 </mapper>
