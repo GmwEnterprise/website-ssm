@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.cqut.chat.mapper.ChatGroupMapMapper">
+
+  <resultMap id="groupMapResultMap" type="ChatGroupMap">
+    <id column="id" property="id"/>
+    <result column="type" property="type"
+            typeHandler="cn.edu.cqut.chat.common.typehandler.ChatGroupMemberTypeHandler"/>
+    <association property="user" javaType="Account">
+      <id column="account_id" property="id"/>
+      <result column="uid" property="uid"/>
+      <result column="bind_phone" property="bindPhone"/>
+      <result column="bind_email" property="bindEmail"/>
+      <result column="register_time" property="registerTime"/>
+      <result column="usage_status" property="usageStatus"
+              typeHandler="cn.edu.cqut.chat.common.typehandler.AccountUsageTypeHandler"/>
+    </association>
+    <association property="group" javaType="ChatGroup">
+      <id column="group_id" property="id"/>
+      <result column="group_uid" property="groupUid"/>
+    </association>
+  </resultMap>
+
+  <select id="queryGroupByAccountUid"
+          resultMap="cn.edu.cqut.chat.mapper.ChatGroupMapper.chatGroupMap">
+    SELECT *
+      FROM
+        t_chat_group a INNER JOIN t_chat_group_map b ON a.group_uid = b.group
+      WHERE b.user = #{uid}
+  </select>
+
+  <sql id="queryUserByGroupSql">
+    SELECT
+      a.*,
+      b.id AS account_id,
+      b.uid,
+      b.bind_phone,
+      b.bind_email,
+      b.register_time,
+      b.usage_status
+      FROM
+        t_user a INNER JOIN t_account b ON a.account = b.uid
+                 INNER JOIN t_chat_group_map m ON b.uid = m.user
+  </sql>
+  <select id="queryUserByGroup"
+          resultMap="cn.edu.cqut.chat.mapper.UserMapper.userMap">
+    <include refid="queryUserByGroupSql"/>
+    <where>
+      AND m.group = #{uid}
+      <if test="type != null">
+        AND m.type = #{type.index}
+      </if>
+    </where>
+  </select>
+
+  <select id="queryByUid" resultType="cn.edu.cqut.chat.entity.ChatGroupMap">
+    SELECT
+      a.id,
+      a.type,
+      b.id AS account_uid,
+      b.uid,
+      b.bind_phone,
+      b.bind_email,
+      b.register_time,
+      b.usage_status,
+      c.id AS group_id,
+      c.group_uid
+      FROM
+        t_chat_group_map a LEFT JOIN t_account b ON a.user = b.uid
+                           LEFT JOIN t_chat_group c ON a.group = c.group_uid
+      WHERE a.group = #{groupUid}
+        AND a.user = #{accountUid}
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    INSERT INTO t_chat_group_map (user, `group`, type)
+      VALUES
+        (#{user.uid}, #{group.groupUid}, #{type.index})
+  </insert>
+
+  <update id="update">
+    UPDATE t_chat_group_map
+      SET
+        user    = #{user.uid},
+        `group` = #{group.groupUid},
+        type    = #{type.index}
+      WHERE id = #{id}
+  </update>
+
+  <delete id="delete">
+    DELETE
+      FROM
+        t_chat_group_map
+      WHERE id = #{id}
+  </delete>
+</mapper>

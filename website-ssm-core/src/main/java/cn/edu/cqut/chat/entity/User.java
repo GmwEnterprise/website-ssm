@@ -1,14 +1,22 @@
 package cn.edu.cqut.chat.entity;
 
-import cn.edu.cqut.chat.common.base.BaseEntity;
 import cn.edu.cqut.chat.enums.Gender;
 
-public class User extends BaseEntity {
+public class User {
 
+  private Long id;
   private Account account;
   private Gender gender;
   private String idNumber;
   private String nickName;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public Account getAccount() {
     return account;
@@ -40,15 +48,5 @@ public class User extends BaseEntity {
 
   public void setNickName(String nickName) {
     this.nickName = nickName;
-  }
-
-  @Override
-  public String toString() {
-    return "User{" +
-        "account=" + account +
-        ", gender=" + gender +
-        ", idNumber='" + idNumber + '\'' +
-        ", nickName='" + nickName + '\'' +
-        '}';
   }
 }

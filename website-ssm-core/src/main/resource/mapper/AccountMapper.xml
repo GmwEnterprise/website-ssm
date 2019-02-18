@@ -3,60 +3,79 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.cqut.chat.mapper.AccountMapper">
 
-  <select id="queryById" resultType="Account">
-    SELECT *
-    FROM t_account
-    WHERE id = #{id}
+  <resultMap id="accountMap" type="Account">
+    <id column="id" property="id"/>
+    <result column="uid" property="uid"/>
+    <result column="password" property="password"/>
+    <result column="bind_phone" property="bindPhone"/>
+    <result column="bind_email" property="bindEmail"/>
+    <result column="register_time" property="registerTime"/>
+    <result column="usage_status" property="usageStatus"
+            typeHandler="cn.edu.cqut.chat.common.typehandler.AccountUsageTypeHandler"/>
+  </resultMap>
+
+  <sql id="accountMapSql">
+    SELECT a.*
+      FROM
+        t_account a
+  </sql>
+
+  <select id="queryOne" resultMap="accountMap">
+    <include refid="accountMapSql"/>
+    WHERE a.id = #{id}
   </select>
 
-  <select id="queryAll" resultType="Account" parameterType="Account">
-    SELECT *
-    FROM t_account
+  <select id="queryAll" resultMap="accountMap">
+    <include refid="accountMapSql"/>
     <where>
       <if test="uid != null and uid != ''">
-        AND uid = #{uid}
+        AND a.uid LIKE concat('%', #{uid}, '%')
       </if>
       <if test="bindPhone != null and bindPhone != ''">
-        AND bind_phone = #{bindPhone}
+        AND a.bind_phone LIKE concat('%', #{bindPhone}, '%')
       </if>
       <if test="bindEmail != null and bindEmail != ''">
-        AND bind_email = #{bindEmail}
+        AND a.bind_email LIKE concat('%', #{bindEmail}, '%')
+      </if>
+      <!-- TODO 时间的范围查询 -->
+      <if test="usageStatus != null">
+        AND a.usage_status = #{usageStatus.index}
       </if>
     </where>
   </select>
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-    INSERT INTO t_account (create_time,
-                           last_modified_time,
-                           remark,
-                           uid,
+    INSERT INTO t_account (uid,
                            password,
                            bind_phone,
-                           bind_email)
-    VALUES (#{createTime},
-            #{lastModifiedTime},
-            #{remark},
-            #{uid},
-            #{password},
-            #{bindPhone},
-            #{bindEmail})
+                           bind_email,
+                           register_time,
+                           usage_status)
+      VALUES
+        (#{uid},
+         #{password},
+         #{bindPhone},
+         #{bindEmail},
+         #{registerTime},
+         #{usageStatus.index})
   </insert>
 
   <update id="update">
     UPDATE t_account
-    SET create_time        = #{createTime},
-        last_modified_time = #{lastModifiedTime},
-        remark             = #{remark},
-        uid                = #{uid},
-        password           = #{password},
-        bind_phone         = #{bindPhone},
-        bind_email         = #{bindEmail}
-    WHERE id = #{id}
+      SET
+        uid           = #{uid},
+        password      = #{password},
+        bind_phone    = #{bindPhone},
+        bind_email    = #{bindEmail},
+        register_time = #{registerTime},
+        usage_status  = #{usageStatus.index}
+      WHERE id = #{id}
   </update>
 
   <delete id="delete">
     DELETE
-    FROM t_account
-    WHERE id = #{id}
+      FROM
+        t_account
+      WHERE id = #{id}
   </delete>
 </mapper>

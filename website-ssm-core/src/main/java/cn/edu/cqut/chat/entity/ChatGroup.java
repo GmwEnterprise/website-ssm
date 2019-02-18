@@ -1,16 +1,27 @@
 package cn.edu.cqut.chat.entity;
 
-import cn.edu.cqut.chat.common.base.BaseEntity;
-import cn.edu.cqut.chat.enums.UserGroupStatus;
+import cn.edu.cqut.chat.enums.GroupStatus;
 
-public class UserGroup extends BaseEntity {
+import java.util.Date;
 
+public class ChatGroup {
+
+  private Long id;
   private String groupUid;
   private User groupCreator;
+  private Date groupCreateDatetime;
   private String groupName;
   private Integer size;
   private Integer rest;
-  private UserGroupStatus status;
+  private GroupStatus status;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getGroupUid() {
     return groupUid;
@@ -26,6 +37,14 @@ public class UserGroup extends BaseEntity {
 
   public void setGroupCreator(User groupCreator) {
     this.groupCreator = groupCreator;
+  }
+
+  public Date getGroupCreateDatetime() {
+    return groupCreateDatetime;
+  }
+
+  public void setGroupCreateDatetime(Date groupCreateDatetime) {
+    this.groupCreateDatetime = groupCreateDatetime;
   }
 
   public String getGroupName() {
@@ -52,11 +71,11 @@ public class UserGroup extends BaseEntity {
     this.rest = rest;
   }
 
-  public UserGroupStatus getStatus() {
+  public GroupStatus getStatus() {
     return status;
   }
 
-  public void setStatus(UserGroupStatus status) {
+  public void setStatus(GroupStatus status) {
     this.status = status;
   }
 }

@@ -1,24 +1,21 @@
 package cn.edu.cqut.chat.enums;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+public enum ChatGroupMemberType {
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum Gender {
-
-  MALE(1, "男"), FEMALE(2, "女"), SECRET(3, "保密");
+  CREATOR(1, "群主"), ADMINISTRATOR(2, "群管理员"), MEMBER(3, "群成员");
 
   private int index;
   private String name;
 
-  Gender(int index, String name) {
-    this.name = name;
+  ChatGroupMemberType(int index, String name) {
     this.index = index;
+    this.name = name;
   }
 
-  public static Gender typeOf(int index) {
-    for (Gender item : values()) {
-      if (item.index == index) {
-        return item;
+  public static ChatGroupMemberType typeOf(int index) {
+    for (ChatGroupMemberType value : values()) {
+      if (value.index == index) {
+        return value;
       }
     }
     return null;

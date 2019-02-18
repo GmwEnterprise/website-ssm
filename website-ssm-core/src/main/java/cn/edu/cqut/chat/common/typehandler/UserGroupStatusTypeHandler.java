@@ -1,6 +1,6 @@
 package cn.edu.cqut.chat.common.typehandler;
 
-import cn.edu.cqut.chat.enums.UserGroupStatus;
+import cn.edu.cqut.chat.enums.GroupStatus;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
@@ -11,31 +11,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@MappedTypes(UserGroupStatus.class)
+@MappedTypes(GroupStatus.class)
 @MappedJdbcTypes(JdbcType.TINYINT)
-public class UserGroupStatusTypeHandler implements TypeHandler<UserGroupStatus> {
+public class UserGroupStatusTypeHandler implements TypeHandler<GroupStatus> {
 
   @Override
-  public void setParameter(PreparedStatement ps, int i, UserGroupStatus parameter, JdbcType jdbcType)
+  public void setParameter(PreparedStatement ps, int i, GroupStatus parameter, JdbcType jdbcType)
       throws SQLException {
     ps.setInt(i, parameter.getIndex());
   }
 
   @Override
-  public UserGroupStatus getResult(ResultSet rs, String columnName)
+  public GroupStatus getResult(ResultSet rs, String columnName)
       throws SQLException {
-    return null;
+    return GroupStatus.typeOf(rs.getInt(columnName));
   }
 
   @Override
-  public UserGroupStatus getResult(ResultSet rs, int columnIndex)
+  public GroupStatus getResult(ResultSet rs, int columnIndex)
       throws SQLException {
-    return null;
+    return GroupStatus.typeOf(rs.getInt(columnIndex));
   }
 
   @Override
-  public UserGroupStatus getResult(CallableStatement cs, int columnIndex)
+  public GroupStatus getResult(CallableStatement cs, int columnIndex)
       throws SQLException {
-    return null;
+    return GroupStatus.typeOf(cs.getInt(columnIndex));
   }
 }

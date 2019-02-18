@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum RelationType {
 
-  ATTENTION(1, "关注"),
-  BLACKLIST(2, "拉黑"),
-  SHIELD(3, "屏蔽"),
-  NO_RELATION(4, "没有关系");
+  ADD_FRIEND(1, "添加对方为好友"), BLACK_LIST(2, "加入黑名单");
 
   private int index;
   private String name;
@@ -16,6 +13,15 @@ public enum RelationType {
   RelationType(int index, String name) {
     this.index = index;
     this.name = name;
+  }
+
+  public static RelationType typeOf(int index) {
+    for (RelationType item : values()) {
+      if (item.index == index) {
+        return item;
+      }
+    }
+    return null;
   }
 
   public int getIndex() {
@@ -32,14 +38,5 @@ public enum RelationType {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public static RelationType typeOf(int index) {
-    for (RelationType item : values()) {
-      if (item.index == index) {
-        return item;
-      }
-    }
-    return null;
   }
 }

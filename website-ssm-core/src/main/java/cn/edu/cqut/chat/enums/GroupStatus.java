@@ -1,6 +1,6 @@
 package cn.edu.cqut.chat.enums;
 
-public enum UserGroupStatus {
+public enum GroupStatus {
 
   RUNING(0, "运作中"),
   DISBANDED(1, "已解散");
@@ -8,9 +8,18 @@ public enum UserGroupStatus {
   private int index;
   private String name;
 
-  UserGroupStatus(int index, String name) {
+  GroupStatus(int index, String name) {
     this.index = index;
     this.name = name;
+  }
+
+  public static GroupStatus typeOf(int index) {
+    for (GroupStatus item : values()) {
+      if (item.index == index) {
+        return item;
+      }
+    }
+    return null;
   }
 
   public int getIndex() {

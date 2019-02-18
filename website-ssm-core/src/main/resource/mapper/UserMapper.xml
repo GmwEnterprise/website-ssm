@@ -5,81 +5,77 @@
 
   <resultMap id="userMap" type="User">
     <id column="id" property="id"/>
-    <result column="create_time" property="createTime"/>
-    <result column="last_modified_time" property="lastModifiedTime"/>
-    <result column="remark" property="remark"/>
     <result column="gender" property="gender"
             typeHandler="cn.edu.cqut.chat.common.typehandler.GenderTypeHandler"/>
     <result column="id_number" property="idNumber"/>
     <result column="nick_name" property="nickName"/>
-    <association property="account" javaType="Account" resultMap="accountMap"/>
+    <association property="account" javaType="Account">
+      <id column="account_id" property="id"/>
+      <result column="uid" property="uid"/>
+      <result column="bind_phone" property="bindPhone"/>
+      <result column="bind_email" property="bindEmail"/>
+      <result column="register_time" property="registerTime"/>
+      <result column="usage_status" property="usageStatus"
+              typeHandler="cn.edu.cqut.chat.common.typehandler.AccountUsageTypeHandler"/>
+    </association>
   </resultMap>
 
-  <resultMap id="accountMap" type="Account">
-    <id column="account_id" property="id"/>
-    <result column="account_uid" property="uid"/>
-  </resultMap>
-
-  <sql id="userMapSelect">
-    SELECT a.*, b.id AS account_id, b.uid AS account_uid
-    FROM t_user a INNER JOIN t_account b ON a.account = b.uid
+  <sql id="userMapSql">
+    SELECT
+      a.*,
+      b.id AS account_id,
+      b.uid,
+      b.bind_phone,
+      b.bind_email,
+      b.register_time,
+      b.usage_status
+      FROM
+        t_user a INNER JOIN t_account b ON a.account = b.uid
   </sql>
 
-  <select id="queryById" resultMap="userMap">
-    <include refid="userMapSelect"/>
+  <select id="queryOne" resultMap="userMap">
+    <include refid="userMapSql"/>
     WHERE a.id = #{id}
   </select>
 
   <select id="queryAll" resultMap="userMap">
-    <include refid="userMapSelect"/>
+    <include refid="userMapSql"/>
     <where>
-      <if test="account != null and account != ''">
-        AND a.account = #{account}
-      </if>
-      <if test="nickName != null and nickName != ''">
-        AND a.nick_name = #{nickName}
-      </if>
-      <if test="idNumber != null and idNumber != ''">
-        AND a.id_number = #{idNumber}
+      <if test="account != null and account.uid != null and account.uid != ''">
+        AND a.account LIKE concat('%', #{account.uid}, '%')
       </if>
       <if test="gender != null">
         AND a.gender = #{gender.index}
+      </if>
+      <if test="idNumber != null and idNumber != ''">
+        AND a.id_number LIKE concat('%', #{idNumber}, '%')
+      </if>
+      <if test="nickName != null and nickName != ''">
+        AND a.nick_name LIKE concat('%', #{nickName}, '%')
       </if>
     </where>
   </select>
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-    INSERT INTO t_user (create_time,
-                        last_modified_time,
-                        remark,
-                        account,
-                        gender,
-                        id_number,
-                        nick_name)
-    VALUES (#{createTime},
-            #{lastModifiedTime},
-            #{remark},
-            #{account.uid},
-            #{gender, typeHandler = cn.edu.cqut.chat.common.typehandler.GenderTypeHandler},
-            #{idNumber},
-            #{nickName})
+    INSERT INTO t_user (account, gender, id_number, nick_name)
+      VALUES
+        (#{account.uid}, #{gender.index}, #{idNumber}, #{nickName})
   </insert>
 
   <update id="update">
     UPDATE t_user
-    SET create_time        = #{createTime},
-        last_modified_time = #{lastModifiedTime},
-        remark             = #{remark},
-        account            = #{account.uid},
-        gender             = #{gender, typeHandler = cn.edu.cqut.chat.common.typehandler.GenderTypeHandler},
-        id_number          = #{idNumber},
-        nick_name          = #{nickName}
-    WHERE id = #{id}
+      SET
+        account   = #{account.uid},
+        gender    = #{gender.index},
+        id_number = #{idNumber},
+        nick_name = #{nickName}
+      WHERE id = #{id}
   </update>
 
   <delete id="delete">
     DELETE
-    FROM t_user
-    WHERE id = #{id}
+      FROM
+        t_user
+      WHERE id = #{id}
   </delete>
 </mapper>

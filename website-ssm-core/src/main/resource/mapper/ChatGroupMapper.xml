@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.cqut.chat.mapper.ChatGroupMapper">
+
+  <resultMap id="chatGroupMap" type="ChatGroup">
+    <id column="id" property="id"/>
+    <result column="group_uid" property="groupUid"/>
+    <result column="group_create_datetime" property="groupCreateDatetime"/>
+    <result column="group_name" property="groupName"/>
+    <result column="size" property="size"/>
+    <result column="rest" property="rest"/>
+    <result column="status" property="status"
+            typeHandler="cn.edu.cqut.chat.common.typehandler.UserGroupStatusTypeHandler"/>
+    <association property="groupCreator" javaType="Account">
+      <id column="account_id" property="id"/>
+      <result column="uid" property="uid"/>
+      <result column="bind_phone" property="bindPhone"/>
+      <result column="bind_email" property="bindEmail"/>
+      <result column="register_time" property="registerTime"/>
+      <result column="usage_status" property="usageStatus"
+              typeHandler="cn.edu.cqut.chat.common.typehandler.AccountUsageTypeHandler"/>
+    </association>
+  </resultMap>
+
+  <sql id="chatGroupMapSql">
+    SELECT
+      a.*,
+      b.id AS account_id,
+      b.uid,
+      b.bind_phone,
+      b.bind_email,
+      b.register_time,
+      b.usage_status
+      FROM
+        t_chat_group a INNER JOIN t_account b ON a.group_creator = b.uid
+  </sql>
+
+  <select id="queryOne" resultMap="chatGroupMap">
+    <include refid="chatGroupMapSql"/>
+    WHERE id = #{id}
+  </select>
+
+  <select id="queryAll" resultMap="chatGroupMap">
+    <include refid="chatGroupMapSql"/>
+    <where>
+      <if test="groupUid != null and groupUid != ''">
+        AND a.group_uid LIKE concat('%', #{groupUid}, '%')
+      </if>
+      <if test="groupName != null and groupName != ''">
+        AND a.group_name LIKE concat('%', #{groupName}, '%')
+      </if>
+      <if test="groupCreator != null and groupCreator.uid != null and groupCreator.uid != ''">
+        AND a.group_creator LIKE concat('%', #{groupCreator.uid}, '%')
+      </if>
+      <if test="status != null">
+        AND a.status = #{status.index}
+      </if>
+      <!--TODO size group create time-->
+    </where>
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    INSERT INTO t_chat_group (group_uid,
+                              group_creator,
+                              group_create_datetime,
+                              group_name,
+                              size,
+                              rest,
+                              status)
+      VALUES
+        (#{groupUid},
+         #{groupCreator.uid},
+         #{groupCreateDatetime},
+         #{groupName},
+         #{size},
+         #{rest},
+         #{status.index})
+  </insert>
+
+  <update id="update">
+    UPDATE t_chat_group
+      SET
+        group_uid             = #{groupUid},
+        group_creator         = #{groupCreator.uid},
+        group_create_datetime = #{groupCreateDatetime},
+        group_name            = #{groupName},
+        size                  = #{size},
+        rest                  = #{rest},
+        status                = #{status.index}
+      WHERE id = #{id}
+  </update>
+
+  <delete id="delete">
+    DELETE
+      FROM
+        t_chat_group
+      WHERE id = #{id}
+  </delete>
+</mapper>

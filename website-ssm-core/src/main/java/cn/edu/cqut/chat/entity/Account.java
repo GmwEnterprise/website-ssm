@@ -1,13 +1,26 @@
 package cn.edu.cqut.chat.entity;
 
-import cn.edu.cqut.chat.common.base.BaseEntity;
+import cn.edu.cqut.chat.enums.AccountUsageStatus;
 
-public class Account extends BaseEntity {
+import java.util.Date;
 
+public class Account {
+
+  private Long id;
   private String uid;
   private String password;
   private String bindPhone;
   private String bindEmail;
+  private Date registerTime;
+  private AccountUsageStatus usageStatus;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getUid() {
     return uid;
@@ -41,13 +54,19 @@ public class Account extends BaseEntity {
     this.bindEmail = bindEmail;
   }
 
-  @Override
-  public String toString() {
-    return "Account{" +
-        "uid='" + uid + '\'' +
-        ", password='" + password + '\'' +
-        ", bindPhone='" + bindPhone + '\'' +
-        ", bindEmail='" + bindEmail + '\'' +
-        '}';
+  public Date getRegisterTime() {
+    return registerTime;
+  }
+
+  public void setRegisterTime(Date registerTime) {
+    this.registerTime = registerTime;
+  }
+
+  public AccountUsageStatus getUsageStatus() {
+    return usageStatus;
+  }
+
+  public void setUsageStatus(AccountUsageStatus usageStatus) {
+    this.usageStatus = usageStatus;
   }
 }

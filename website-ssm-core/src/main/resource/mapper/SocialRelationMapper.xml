@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqut.chat.mapper.SocialRelationMapper">
+
+  <resultMap id="relationMap" type="SocialRelation">
+    <id column="id" property="id"/>
+    <result column="relation_type" property="relationType"
+            typeHandler="cn.edu.cqut.chat.common.typehandler.RelationTypeHandler"/>
+    <association property="you" javaType="Account">
+      <id column="you_id" property="id"/>
+      <result column="you_uid" property="uid"/>
+      <result column="you_bind_phone" property="bindPhone"/>
+      <result column="you_bind_email" property="bindEmail"/>
+      <result column="you_register_time" property="registerTime"/>
+      <result column="you_usage_status" property="usageStatus"
+              typeHandler="cn.edu.cqut.chat.common.typehandler.AccountUsageTypeHandler"/>
+    </association>
+    <association property="other" javaType="Account">
+      <id column="other_id" property="id"/>
+      <result column="other_uid" property="uid"/>
+      <result column="other_bind_phone" property="bindPhone"/>
+      <result column="other_bind_email" property="bindEmail"/>
+      <result column="other_register_time" property="registerTime"/>
+      <result column="other_usage_status" property="usageStatus"
+              typeHandler="cn.edu.cqut.chat.common.typehandler.AccountUsageTypeHandler"/>
+    </association>
+  </resultMap>
+
+  <sql id="relationMapSql">
+    SELECT
+      a.id            AS id,
+      a.relation_type AS relation_type,
+      b.id            AS you_id,
+      b.uid           AS you_uid,
+      b.bind_phone    AS you_bind_phone,
+      b.bind_email    AS you_bind_email,
+      b.register_time AS you_register_time,
+      b.usage_status  AS you_usage_status,
+      c.id            AS other_id,
+      c.uid           AS other_uid,
+      c.bind_phone    AS other_bind_phone,
+      c.bind_email    AS other_bind_email,
+      c.register_time AS other_register_time,
+      c.usage_status  AS other_usage_status
+      FROM
+        t_social_relation a INNER JOIN t_account b ON a.you = b.uid
+                          INNER JOIN t_account c ON a.other = c.uid
+  </sql>
+
+  <select id="queryAll" resultMap="relationMap">
+    <include refid="relationMapSql"/>
+    <where>
+      <if test="you != null and you.uid != null and you.uid != ''">
+        AND you_uid LIKE concat('%', #{you.uid}, '%')
+      </if>
+      <if test="other != null and other.uid != null and other.uid != ''">
+        AND other_uid LIKE concat('%', #{other.uid}, '%')
+      </if>
+      <if test="relationType != null">
+        AND relation_type = #{relationType}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    INSERT INTO t_social_relation (you, other, relation_type)
+      VALUES
+        (#{you.uid}, #{other.uid}, #{relationType.index})
+  </insert>
+
+  <update id="update">
+    UPDATE t_social_relation
+      SET
+        you           = #{you.uid},
+        other         = #{other.uid},
+        relation_type = #{relationType.index}
+      WHERE id = #{id}
+  </update>
+
+  <delete id="delete">
+    DELETE
+      FROM
+        t_social_relation
+      WHERE id = #{id}
+  </delete>
+</mapper>

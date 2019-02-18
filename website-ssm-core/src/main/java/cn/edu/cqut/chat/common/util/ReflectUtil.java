@@ -1,7 +1,5 @@
 package cn.edu.cqut.chat.common.util;
 
-import cn.edu.cqut.chat.common.ClassDetails;
-
 /**
  * 反射工具类
  */
@@ -15,10 +13,5 @@ public final class ReflectUtil {
   public static String getEntityName(Object e) {
     String simpleName = e.getClass().getSimpleName();
     return simpleName.substring(0, 1).toLowerCase() + simpleName.substring(1);
-  }
-
-  public static ClassDetails getClassDetailText(Class<?> clazz) {
-
-    return null;
   }
 }
